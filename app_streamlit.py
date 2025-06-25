@@ -15,7 +15,7 @@ import requests
 st.set_page_config(page_title="Prediksi Obesitas", layout="centered")
 st.title("🩺 Prediksi Kategori Obesitas")
 
-API_URL = "http://127.0.0.1:8000/predict"
+API_URL = "http://127.0.0.1:9000/predict"
 
 with st.form("input_form"):
     st.subheader("Masukkan Data Anda:")
