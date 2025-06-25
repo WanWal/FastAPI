@@ -8,6 +8,7 @@ Original file is located at
 """
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import pickle
 import pandas as pd
@@ -17,6 +18,23 @@ with open("obesity_model.pkl", "rb") as f:
     model = pickle.load(f)
 
 app = FastAPI()
+
+# CORS settings
+official_origins = [
+    "http://localhost",
+    "http://localhost:3000",
+    "http://localhost:8501",
+    # Untuk development, bisa gunakan "*" (hati-hati di production)
+    "*"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=official_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class ObesityInput(BaseModel):
     Gender: str
@@ -41,4 +59,3 @@ def predict(data: ObesityInput):
     df = pd.DataFrame([data.dict()])
     prediction = model.predict(df)
     return {"prediction": prediction[0]}
-
